@@ -8,12 +8,13 @@ const Header = () => {
     const containerStyle = {
         display: 'flex',
         justifyContent: 'center',
-        backgroundColor: 'black',
+        backgroundColor: '#1565c0',
         width: '80%',
         margin: 'auto',
         color: 'white',
         paddingBottom: '70px',
         paddingTop: '30px',
+        borderRadius: '5px',
       };
 
   const divInfoStyle = {

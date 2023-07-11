@@ -1,17 +1,25 @@
-import { useState } from 'react'
 import './App.css'
-import Header from './components/header'
-import List  from './components/list'
+import Cadastro from './pages/Cadastro';
+import Home from './pages/Home'
+import { BrowserRouter as Router, Route, Routes} from 'react-router-dom'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const divStyle = {
+    backgroundColor: '#f2f2f2',
+    margin: '0',
+    pading: '0',
+  }
 
   return (
-    <>
-      <Header />
-      <List/>
-    </>
+    <div style={divStyle}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/cadastro" element={<Cadastro />} />
+        </Routes>
+      </Router>
+    </div>
   )
 }
 
-export default App
+export default App;
