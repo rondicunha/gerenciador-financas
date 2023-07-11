@@ -11,11 +11,13 @@ const divStyle = {
     margin: '0'
     };
 
-const Info = () => {
+const Info = (param) => {
+
     return (
         <div style={divStyle}>
             <span>R$</span>
-            <p>0,00</p>
+            
+            <p>{param.parametro}</p>
 
         </div>
     );
