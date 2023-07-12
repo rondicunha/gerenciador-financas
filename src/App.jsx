@@ -4,14 +4,9 @@ import Home from './pages/Home'
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom'
 
 function App() {
-  const divStyle = {
-    backgroundColor: '#f2f2f2',
-    margin: '0',
-    pading: '0',
-  }
 
   return (
-    <div style={divStyle}>
+    <div>
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />

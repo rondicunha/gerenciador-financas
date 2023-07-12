@@ -15,9 +15,9 @@ const Info = (param) => {
 
     return (
         <div style={divStyle}>
-            <span>R$</span>
+            <span className="custom-font">R$</span>
             
-            <p>{param.parametro}</p>
+            <p className="custom-font">{param.parametro}</p>
 
         </div>
     );

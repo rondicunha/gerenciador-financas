@@ -28,6 +28,9 @@ const Form = () => {
     justifyContent: 'center',
     flexDirection: 'column',
     gap: '20px',
+    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)',
+    padding:'25px 25px 15px 10px',
+    borderRadius: '5px'
   };
 
   const options = [
@@ -59,24 +62,20 @@ const Form = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // Verifique se todos os campos estão preenchidos
     if (!formValues.descricao || !formValues.valor || !formValues.tipo) {
       console.log('Por favor, preencha todos os campos');
       return;
     }
 
-    // Crie um objeto com os dados do formulário
     const data = {
       descricao: formValues.descricao,
       valor: formValues.valor,
       tipo: formValues.tipo.label,
     };
 
-    // Faça a chamada para a API usando o Axios
     api.post('/cadastro', data)
       .then((response) => {
         console.log('Dados enviados com sucesso!', response.data);
-        // Limpe os valores do formulário
         setFormValues({
           descricao: '',
           valor: '',
@@ -90,7 +89,7 @@ const Form = () => {
 
   return (
     <div style={styleDiv}>
-      <h1>Formulário</h1>
+      <h1 className="custom-font" style={{color:'#1565c0'}}>Formulário</h1>
       <div>
         <form style={styleDivForm} onSubmit={handleSubmit}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
@@ -118,7 +117,7 @@ const Form = () => {
             <Autocomplete
               id="tipo"
               options={options}
-              sx={{ width: 225 }}
+              sx={{ width: 215 }}
               getOptionLabel={(option) => option.label}
               renderInput={(params) => (
                 <TextField {...params} label="Tipo" />

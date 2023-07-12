@@ -10,6 +10,8 @@ import TableRow from '@mui/material/TableRow';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import api from "../../services/api";
+import ArrowCircleUpRoundedIcon from '@mui/icons-material/ArrowCircleUpRounded';
+import ArrowCircleDownRoundedIcon from '@mui/icons-material/ArrowCircleDownRounded';
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -56,13 +58,11 @@ const List = () => {
     }, []);
 
     const handleDelete = (itemToDelete) => {
-      // Faça a chamada para a API para excluir o item
       api
-        .post("/excluir", { itemToDelete: itemToDelete.descricao })
-        .then((response) => {
+        .delete(`/items/${itemToDelete.id}`)
+        .then(() => {
           console.log('Item excluído da API:', itemToDelete);
-          // Atualize a lista local removendo o item excluído
-          setItem(item.filter((item) => item.descricao !== itemToDelete.descricao));
+          setItem(item.filter((item) => item.id !== itemToDelete.id));
         })
         .catch((err) => {
           console.error("Ops! Ocorreu um erro ao excluir o item:", err);
@@ -82,23 +82,33 @@ const List = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {item.map((item) => (
-            <StyledTableRow
-              key={item.descricao}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <StyledTableCell component="th" scope="row">
-                {item.descricao}
-              </StyledTableCell>
-              <StyledTableCell align="right">{item.valor}</StyledTableCell>
-              <StyledTableCell align="right">{item.tipo}</StyledTableCell>
-              <StyledTableCell align="right">
-                <IconButton aria-label="delete" onClick={() => handleDelete(item)}>
-                  <DeleteIcon />
-                </IconButton>
-              </StyledTableCell>
-            </StyledTableRow>
-          ))}
+        {item.length === 0 ? (
+              <StyledTableRow>
+                <StyledTableCell colSpan={4} align="center">
+                  Você ainda Não tem itens cadastrado..
+                </StyledTableCell>
+              </StyledTableRow>
+            ) : (
+              item.map((item) => (
+                <StyledTableRow
+                  key={item.descricao}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <StyledTableCell component="th" scope="row">
+                    {item.descricao}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">{item.valor}</StyledTableCell>
+                  <StyledTableCell align="right">
+                    {item.tipo === 'Entrada' ? <ArrowCircleUpRoundedIcon /> : <ArrowCircleDownRoundedIcon/>}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    <IconButton aria-label="delete" onClick={() => handleDelete(item)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))
+            )}
         </TableBody>
       </Table>
     </TableContainer>
