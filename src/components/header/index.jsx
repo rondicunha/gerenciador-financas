@@ -5,10 +5,7 @@ import ArrowCircleDownRoundedIcon from '@mui/icons-material/ArrowCircleDownRound
 import AttachMoneyRoundedIcon from '@mui/icons-material/AttachMoneyRounded';
 import api from "../../services/api";
 
-const Header = () => {
-  const [itens, setItens] = useState([]);
-  const [somaEntrada, setSomaEntrada] = useState(0);
-  const [somaSaida, setSomaSaida] = useState(0);
+const Header = ({ somaEntrada, somaSaida }) => {
 
   const containerStyle = {
     display: 'flex',
@@ -40,64 +37,48 @@ const Header = () => {
     alignItems: 'center',
   };
 
-  useEffect(() => {
-    api.get("/")
-      .then((response) => {
-        setItens(response.data);
-        calcularSomas(response.data);
-      })
-      .catch((err) => {
-        console.error("Ocorreu um erro ao buscar os itens:", err);
-      });
-  }, []);
-
-  const removerItem = (itemId) => {
-    api.delete(`/items/${itemId}`)
-      .then(() => {
-        console.log('Item excluído da API:', itemId);
-        const updatedItens = itens.filter((item) => item.id !== itemId);
-        setItens(updatedItens);
-        calcularSomas(updatedItens);
-      })
-      .catch((err) => {
-        console.error("Ops! Ocorreu um erro ao excluir o item:", err);
-      });
-  };
-
-  const calcularSomas = (itens) => {
-    const entrada = itens
-      .filter((item) => item.tipo === "Entrada")
-      .reduce((acc, item) => acc + parseFloat(item.valor.replace(",", ".")), 0)
-      .toFixed(2);
-    const saida = itens
-      .filter((item) => item.tipo === "Saída")
-      .reduce((acc, item) => acc + parseFloat(item.valor.replace(",", ".")), 0)
-      .toFixed(2);
-    setSomaEntrada(entrada);
-    setSomaSaida(saida);
-  };
-
   return (
     <div>
       <div style={containerStyle}>
         <h1 className="custom-font">Gerenciador de Finanças</h1>
       </div>
-      <div style={{ position: 'relative' }}>
-        <div style={{ ...divInfoStyle, top: '50%', transform: 'translate(-50%, -50%)', left: '25%' }}>
+      <div style={{ position: "relative" }}>
+        <div
+          style={{
+            ...divInfoStyle,
+            top: "50%",
+            transform: "translate(-50%, -50%)",
+            left: "25%",
+          }}
+        >
           <div style={headerInfo}>
             <h3 className="custom-font">Entrada:</h3>
             <ArrowCircleUpRoundedIcon />
           </div>
-          <Info parametro={somaEntrada} onRemove={removerItem} />
+          <Info parametro={somaEntrada} />
         </div>
-        <div style={{ ...divInfoStyle, top: '50%', transform: 'translate(-50%, -50%)', left: '50%' }}>
+        <div
+          style={{
+            ...divInfoStyle,
+            top: "50%",
+            transform: "translate(-50%, -50%)",
+            left: "50%",
+          }}
+        >
           <div style={headerInfo}>
             <h3 className="custom-font">Saída:</h3>
             <ArrowCircleDownRoundedIcon />
           </div>
-          <Info parametro={somaSaida} onRemove={removerItem} />
+          <Info parametro={somaSaida} />
         </div>
-        <div style={{ ...divInfoStyle, top: '50%', transform: 'translate(-50%, -50%)', left: '75%' }}>
+        <div
+          style={{
+            ...divInfoStyle,
+            top: "50%",
+            transform: "translate(-50%, -50%)",
+            left: "75%",
+          }}
+        >
           <div style={headerInfo}>
             <h3 className="custom-font">Total:</h3>
             <AttachMoneyRoundedIcon />

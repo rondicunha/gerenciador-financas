@@ -12,6 +12,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import api from "../../services/api";
 import ArrowCircleUpRoundedIcon from '@mui/icons-material/ArrowCircleUpRounded';
 import ArrowCircleDownRoundedIcon from '@mui/icons-material/ArrowCircleDownRounded';
+import Header from "../header";
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -45,75 +46,61 @@ const divList ={
 
 
 
-const List = () => {
-    const [item, setItem] = useState([]);
-
-    useEffect(() => {
-      api
-        .get("/")
-        .then((response) => setItem(response.data))
-        .catch((err) => {
-          console.error("ops! ocorreu um erro" + err);
-        });
-    }, []);
-
-    const handleDelete = (itemToDelete) => {
-      api
-        .delete(`/items/${itemToDelete.id}`)
-        .then(() => {
-          console.log('Item excluído da API:', itemToDelete);
-          setItem(item.filter((item) => item.id !== itemToDelete.id));
-        })
-        .catch((err) => {
-          console.error("Ops! Ocorreu um erro ao excluir o item:", err);
-        });
-    };
-
-    return (
-        <div style={divList}>
-            <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="costomized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>Descrição:</StyledTableCell>
-            <StyledTableCell align="right">Valor:</StyledTableCell>
-            <StyledTableCell align="right">Tipo:</StyledTableCell>
-            <StyledTableCell align="right"></StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-        {item.length === 0 ? (
+const List = ({ itens, onDelete }) => {
+  return (
+    <div style={divList}>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="costomized table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>Descrição:</StyledTableCell>
+              <StyledTableCell align="right">Valor:</StyledTableCell>
+              <StyledTableCell align="right">Tipo:</StyledTableCell>
+              <StyledTableCell align="right"></StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {itens.length === 0 ? (
               <StyledTableRow>
                 <StyledTableCell colSpan={4} align="center">
-                  Você ainda Não tem itens cadastrado..
+                  Você ainda não tem itens cadastrados.
                 </StyledTableCell>
               </StyledTableRow>
             ) : (
-              item.map((item) => (
+              itens.map((item) => (
                 <StyledTableRow
                   key={item.descricao}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <StyledTableCell component="th" scope="row">
                     {item.descricao}
                   </StyledTableCell>
-                  <StyledTableCell align="right">{item.valor}</StyledTableCell>
                   <StyledTableCell align="right">
-                    {item.tipo === 'Entrada' ? <ArrowCircleUpRoundedIcon /> : <ArrowCircleDownRoundedIcon/>}
+                    {parseFloat(item.valor).toFixed(2)}
                   </StyledTableCell>
                   <StyledTableCell align="right">
-                    <IconButton aria-label="delete" onClick={() => handleDelete(item)}>
+                    {item.tipo === "Entrada" ? (
+                      <ArrowCircleUpRoundedIcon />
+                    ) : (
+                      <ArrowCircleDownRoundedIcon />
+                    )}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    <IconButton
+                      aria-label="delete"
+                      onClick={() => onDelete(item)}
+                    >
                       <DeleteIcon />
                     </IconButton>
                   </StyledTableCell>
                 </StyledTableRow>
               ))
             )}
-        </TableBody>
-      </Table>
-    </TableContainer>
-        </div>
-    );
-}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
+  );
+};
 
 export default List;
