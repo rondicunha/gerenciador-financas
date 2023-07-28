@@ -7,6 +7,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import Button from '@mui/material/Button';
 import api from "../../services/api";
+import { useNavigate } from "react-router-dom";
 
 const Form = () => {
   const [formValues, setFormValues] = useState({
@@ -14,6 +15,8 @@ const Form = () => {
     valor: '',
     tipo: null
   });
+  
+  const navigate = useNavigate();
 
   const styleDiv = {
     display: 'flex',
@@ -63,7 +66,7 @@ const Form = () => {
     event.preventDefault();
 
     if (!formValues.descricao || !formValues.valor || !formValues.tipo) {
-      console.log('Por favor, preencha todos os campos');
+      alert('Por favor, preencha todos os campos');
       return;
     }
 
@@ -81,6 +84,9 @@ const Form = () => {
           valor: '',
           tipo: null,
         });
+
+        navigate('/')
+        alert('Dados enviados com sucesso');
       })
       .catch((error) => {
         console.error('Ocorreu um erro ao enviar os dados:', error);
